@@ -1,27 +1,37 @@
-import React from "react";
+import React, {useState} from "react";
 import { SafeAreaView, StyleSheet, TextInput, Text, Alert } from "react-native";
 import { Button } from 'react-native-elements'
-import setUserLoggedIn from './App.js'
+// import setUserLoggedIn from './App.js'
 
-const Login = () => {
+export default function Login(props){
   const [phone, onChangeText] = React.useState(null);
   const [otp, onChangeNumber] = React.useState(null);
-  const [isLoading, setLoading] = React.useState(true);
-  const tryLogin = async () => {
+  // const [isLoading, setLoading] = React.useState(true);
+  const tryLogin = () => {
     try {
-     const response = await fetch('https://dev.stedi.me/twofactorlogin', {
+     fetch('https://dev.stedi.me/twofactorlogin', {
       method: 'POST',
       body: JSON.stringify({
         phoneNumber: phone, 
         oneTimePassword: otp
       })
-    });
-     console.log(await response.text());
+    })
+    .then((response) => response.text())
+    .then((authKey) => {
+      validateAuth(authKey);
+      // call another function to validate authkey
+    })
    } catch (error) {
      console.error(error);
-   } finally {
-     setLoading(false);
    }
+ }
+
+ const validateAuth = (authKey) => {
+  console.log(authKey)
+  fetch('https://dev.stedi.me/validate/' + authKey, {
+      method: 'GET'
+    }).then((response) => response.text())
+    .then((email) => {console.log(email)})
  }
 
   return (
@@ -85,5 +95,3 @@ const styles = StyleSheet.create({
     flex: 1
   }
 });
-
-export default Login;

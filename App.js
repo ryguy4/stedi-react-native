@@ -25,9 +25,9 @@ export default function App() {
           activeColor='white'
           barStyle={{ backgroundColor: 'green' }}
         >
-          <Tab.Screen
+          <Tab.Screen 
             name='Home'
-            component={Home}
+            children={()=><Home setUserLoggedIn={setUserLoggedIn}/>}
             options={{
               tabBarLabel: 'Home',
               tabBarIcon: ({ color }) => (
@@ -55,22 +55,12 @@ export default function App() {
               ),
             }}
           />
-          {/* <Tab.Screen
-            name='Login'
-            component={Login}
-            options={{
-              tabBarLabel: 'Login',
-              tabBarIcon: ({ color }) => (
-                <FontAwesome name='gear' color={color} size={26} />
-              ),
-            }}
-          /> */}
         </Tab.Navigator>
       </NavigationContainer>
     );
   }
   else{
-    return(<Login/>)
+    return(<Login setUserLoggedIn={setUserLoggedIn} />)
   }
 
 

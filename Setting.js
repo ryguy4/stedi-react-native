@@ -4,12 +4,12 @@ import { Card, ListItem, Button, Icon } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
-function Setting() {
+function Setting(props) {
     return(
       <View>
       <Button
-      title="Log In"
-      onPress={() => navigation.navigate('Login')}
+      title="Log Out"
+      onPress={() => props.setUserLoggedIn(false)}
     />
       </View>
     )

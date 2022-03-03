@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -14,56 +14,55 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const Tab = createMaterialBottomTabNavigator();
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName='Home'
-        activeColor='white'
-        barStyle={{ backgroundColor: 'green' }}
-      >
-        <Tab.Screen
-          name='Home'
-          component={Home}
-          options={{
-            tabBarLabel: 'Home',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name='home' color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name='Step Counter'
-          component={Counter}
-          options={{
-            tabBarLabel: 'Step Counter',
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name='watch' color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name='Settings'
-          component={SettingsScreen}
-          options={{
-            tabBarLabel: 'Settings',
-            tabBarIcon: ({ color }) => (
-              <FontAwesome name='gear' color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name='Login'
-          component={Login}
-          options={{
-            tabBarLabel: 'Login',
-            tabBarIcon: ({ color }) => (
-              <FontAwesome name='gear' color={color} size={26} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
+
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [email, updateEmail] = React.useState("null");
+
+  if(userLoggedIn){
+    return (
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName='Home'
+          activeColor='white'
+          barStyle={{ backgroundColor: 'green' }}
+        >
+          <Tab.Screen 
+            name='Home'
+            children={()=><Home setUserLoggedIn={setUserLoggedIn}/>}
+            options={{
+              tabBarLabel: 'Home',
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons name='home' color={color} size={26} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name='Step Counter'
+            component={Counter}
+            options={{
+              tabBarLabel: 'Step Counter',
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons name='watch' color={color} size={26} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name='Settings'
+            children={()=><SettingsScreen email={email}/>}
+            options={{
+              tabBarLabel: 'Settings',
+              tabBarIcon: ({ color }) => (
+                <FontAwesome name='gear' color={color} size={26} />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    );
+  }
+  else{
+    return(<Login setUserLoggedIn={setUserLoggedIn} updateEmail={updateEmail}/>)
+  }
 
 
 }

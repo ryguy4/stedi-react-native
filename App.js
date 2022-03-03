@@ -16,6 +16,7 @@ const Tab = createMaterialBottomTabNavigator();
 export default function App() {
 
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [email, updateEmail] = React.useState("null");
 
   if(userLoggedIn){
     return (
@@ -47,7 +48,7 @@ export default function App() {
           />
           <Tab.Screen
             name='Settings'
-            component={SettingsScreen}
+            children={()=><SettingsScreen email={email}/>}
             options={{
               tabBarLabel: 'Settings',
               tabBarIcon: ({ color }) => (
@@ -60,7 +61,7 @@ export default function App() {
     );
   }
   else{
-    return(<Login setUserLoggedIn={setUserLoggedIn} />)
+    return(<Login setUserLoggedIn={setUserLoggedIn} updateEmail={updateEmail}/>)
   }
 
 

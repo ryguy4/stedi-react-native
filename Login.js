@@ -27,11 +27,21 @@ export default function Login(props){
  }
 
  const validateAuth = (authKey) => {
-  console.log(authKey)
+  // console.log(authKey)
   fetch('https://dev.stedi.me/validate/' + authKey, {
       method: 'GET'
     }).then((response) => response.text())
-    .then((email) => {console.log(email)})
+    .then((email) => {
+      if (email.substring(0, 6) == "<html>"){
+        Alert.alert("Invalid Login!")
+
+      }else{
+        props.setUserLoggedIn(true)
+        props.updateEmail(email)
+      }
+
+      
+    })
  }
 
   return (

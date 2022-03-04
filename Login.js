@@ -30,17 +30,22 @@ export default function Login(props){
   // console.log(authKey)
   fetch('https://dev.stedi.me/validate/' + authKey, {
       method: 'GET'
-    }).then((response) => response.text())
-    .then((email) => {
-      if (email.substring(0, 6) == "<html>"){
-        Alert.alert("Invalid Login!")
+    }).then((response) => {
+      const statusCode = response.status;
+      const data = response.text();
+      return Promise.all([statusCode, data]);
+    })
+    .then(([res, data]) => {
+      //console.log(res, data);
+      if (res == 200){
+            
+        props.setUserLoggedIn(true)
+        props.updateEmail(data)
+        // Save authkey
 
       }else{
-        props.setUserLoggedIn(true)
-        props.updateEmail(email)
+        Alert.alert("Invalid Login!")
       }
-
-      
     })
  }
 

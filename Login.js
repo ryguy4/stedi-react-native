@@ -15,8 +15,7 @@ export default function Login(props){
         phoneNumber: phone, 
         oneTimePassword: otp
       })
-    })
-    .then((response) => response.text())
+    }).then((response) => response.text())
     .then((authKey) => {
       validateAuth(authKey);
       // call another function to validate authkey
@@ -33,7 +32,7 @@ export default function Login(props){
     }).then((response) => {
       const statusCode = response.status;
       const data = response.text();
-      return Promise.all([statusCode, data]);
+      return [statusCode, data];
     })
     .then(([res, data]) => {
       //console.log(res, data);

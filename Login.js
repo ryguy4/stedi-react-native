@@ -6,11 +6,14 @@ import { Button } from 'react-native-elements'
 export default function Login(props){
   const [phone, onChangeText] = React.useState(null);
   const [otp, onChangeNumber] = React.useState(null);
-  // const [isLoading, setLoading] = React.useState(true);
   const tryLogin = () => {
     try {
      fetch('https://dev.stedi.me/twofactorlogin', {
       method: 'POST',
+      headers:{
+        Accept:'application/text',
+        "Content-Type":"application/text"
+      },
       body: JSON.stringify({
         phoneNumber: phone, 
         oneTimePassword: otp
@@ -28,7 +31,11 @@ export default function Login(props){
  const validateAuth = (authKey) => {
   // console.log(authKey)
   fetch('https://dev.stedi.me/validate/' + authKey, {
-      method: 'GET'
+      method: 'GET',
+      headers:{
+        Accept:'application/text',
+        "Content-Type":"application/text"
+      },
     }).then((response) => {
       const statusCode = response.status;
       const data = response.text();
@@ -61,7 +68,21 @@ export default function Login(props){
       />
       <Button style={styles.bttn}
       title="Send OTP"
-      onPress={() => fetch('https://dev.stedi.me/twofactorlogin/' + phone, {method: 'POST'})}
+      onPress={() => {
+        fetch('https://dev.stedi.me/twofactorlogin/' + phone, {
+          method: 'POST',
+          headers:{
+            Accept:'application/text',
+            "Content-Type":"application/text"
+          }
+        }
+        ).then((response) => {
+          if (response.status != 200){
+            Alert.alert("Invalid Phone Number")
+          }
+          
+        })
+      }}
     />
       <TextInput
         style={styles.input}
@@ -74,19 +95,6 @@ export default function Login(props){
       title="Login"
       onPress={() => tryLogin() }
     />
-    {/* function userlogin(){
-    setuserpassword();
-    setphonenumber();
-    $.ajax({
-        type: 'POST',
-        url: 'https://dev.stedi.me/twofactorlogin',
-        data: JSON.stringify({"phoneNumber": phoneNumber, "oneTimePassword": password}),
-        success: function(data) {
-            window.location.href = "/timer.html#"+data;//add the token to the url
-        },
-        contentType: "application/text",
-        dataType: 'text'
-    }); */}
     </SafeAreaView>
   );
 };
